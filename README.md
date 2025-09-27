@@ -67,15 +67,15 @@ flowchart TD
     A[DICOM (.dcm) files] --> B[Convert with dcm2niix / MRIcroGL]
     B --> C[NIfTI (.nii) format]
 
-    C --> D[HCP PreFreeSurfer Pipeline<br/>(T1w + T2w structural preprocessing)]
-    D --> E[HCP FreeSurfer Pipeline<br/>(surface reconstruction)]
-    E --> F[HCP fMRIVolume Pipeline<br/>(fMRI preprocessing)]
+    C --> D[HCP PreFreeSurfer Pipeline: T1w + T2w structural preprocessing]
+    D --> E[HCP FreeSurfer Pipeline: surface reconstruction]
+    E --> F[HCP fMRIVolume Pipeline: fMRI preprocessing]
 
-    F --> G[Processed Data<br/>(clean, aligned, ready for analysis)]
-    G --> H[Feature Extraction<br/>(Connectivity matrices: fMRI, DTI, sMRI)]
-    H --> I[Graph Construction<br/>(multi-modal brain graph)]
-    I --> J[Graph Neural Network (GNN)<br/>Biomarker Discovery & Interpretation]
-```
+    F --> G[Processed Data: clean, aligned, ready for analysis]
+    G --> H[Feature Extraction: Connectivity matrices (fMRI, DTI, sMRI)]
+    H --> I[Graph Construction: multi-modal brain graph]
+    I --> J[Graph Neural Network (GNN): Biomarker Discovery & Interpretation]
+
 
 ---
 
