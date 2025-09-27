@@ -62,22 +62,8 @@ The goal of this project is to **analyze and understand brain connectivity** by 
 
 ## 🧩 Preprocessing Workflow — Visual Overview
 
-```mermaid
-flowchart TD
-    A[DICOM (.dcm) files] --> B[Convert with dcm2niix / MRIcroGL]
-    B --> C[NIfTI (.nii) format]
+![Preprocessing Workflow](images/preprocessing_workflow.svg)
 
-    C --> D[HCP PreFreeSurfer Pipeline: T1w + T2w structural preprocessing]
-    D --> E[HCP FreeSurfer Pipeline: surface reconstruction]
-    E --> F[HCP fMRIVolume Pipeline: fMRI preprocessing]
-
-    F --> G[Processed Data: clean, aligned, ready for analysis]
-    G --> H[Feature Extraction: Connectivity matrices (fMRI, DTI, sMRI)]
-    H --> I[Graph Construction: multi-modal brain graph]
-    I --> J[Graph Neural Network (GNN): Biomarker Discovery & Interpretation]
-
-
----
 
 ## ⚙️ Installation & Dependencies
 
