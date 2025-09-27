@@ -9,7 +9,7 @@ The work is based on the methodology described in:
 📖 **Qu, G., Zhou, Z., Calhoun, V. D., Zhang, A., & Wang, Y.-P. (2025).**
 *Integrated brain connectivity analysis with fMRI, DTI, and sMRI powered by interpretable graph neural networks.*
 Medical Image Analysis, 103570.
-👉 [DOI link]([https://doi.org/10.1016/j.media.2025.103570])
+👉 [DOI](https://doi.org/10.1016/j.media.2025.103570)
 
 ---
 
