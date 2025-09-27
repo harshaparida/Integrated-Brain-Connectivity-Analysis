@@ -1,47 +1,98 @@
-# 🧠 MRI Preprocessing and Feature Extraction Pipeline
+# 🧠 Integrated Brain Connectivity Analysis 🚀
 
-This repository documents the workflow for **converting DICOM MRI scans to NIfTI format** and preprocessing them using the **Human Connectome Project (HCP) Minimal Preprocessing Pipelines**.
+This repository contains the **data preprocessing pipeline** for the thesis project:
 
-The end goal is to prepare cleaned MRI/fMRI data for **feature extraction** and **matrix creation**, as described in the referenced research paper.
+**Integrated Brain Connectivity Analysis with fMRI, DTI, and sMRI powered by interpretable Graph Neural Networks.**
+
+The work is based on the methodology described in:
+
+📖 **Qu, G., Zhou, Z., Calhoun, V. D., Zhang, A., & Wang, Y.-P. (2025).**
+*Integrated brain connectivity analysis with fMRI, DTI, and sMRI powered by interpretable graph neural networks.*
+Medical Image Analysis, 103570.
+👉 [DOI link (if available)](https://doi.org/)
 
 ---
 
-## 📂 Workflow Overview
+## 📚 Project Overview
 
-1. **Data Conversion**
+The goal of this project is to **analyze and understand brain connectivity** by integrating **multi-modal neuroimaging data** (fMRI, DTI, sMRI).
 
-   * Convert raw **DICOM (.dcm)** files to **NIfTI (.nii)** format.
-   * Tools: [`dcm2niix`](https://github.com/rordenlab/dcm2niix), [`dicom2nifti`](https://pypi.org/project/dicom2nifti/), or **MRIcroGL**.
+* 🧩 **Data Modalities**:
 
-2. **Preprocessing Pipelines (HCP Minimal Pipelines)**
+  * **fMRI** → functional connectivity.
+  * **DTI** → structural connectivity (white matter tracts).
+  * **sMRI** → structural volumes, cortical thickness.
 
-   * Run **PreFreeSurferPipeline** for initial alignment & normalization.
-   * Run **FreeSurferPipeline** for structural surface reconstruction.
-   * Run **fMRIVolumePipeline** for fMRI data preprocessing.
+* 🤖 **Analysis Method**:
 
-3. **Feature Extraction**
+  * Interpretable **Graph Neural Networks (GNNs)** for biomarker discovery and prediction.
 
-   * Extract brain connectivity features (not yet covered here).
-   * Generate matrices for downstream analysis.
+* 🎯 **Outcome**:
+
+  * Identify biomarkers of brain function.
+  * Provide interpretable insights into brain network organization.
+
+---
+
+## 🛠 Current Progress
+
+✅ **Step 1: DICOM → NIfTI Conversion**
+
+* Tools used: `dcm2niix`, MRIcroGL.
+* Example:
+
+  ```
+  I1092241_Axial_rsfMRI_(EYES_OPEN)_20181213125500_9.nii
+  ```
+
+✅ **Step 2: HCP Minimal Preprocessing Pipelines**
+
+* PreFreeSurferPipeline (T1w + T2w preprocessing).
+* FreeSurferPipeline (structural reconstruction).
+* fMRIVolumePipeline (fMRI preprocessing).
+
+🔜 **Next Steps**
+
+* Feature extraction from processed fMRI, DTI, and sMRI.
+* Build connectivity matrices.
+* Construct multi-modal brain graphs.
+* Train interpretable GNNs.
+
+---
+
+## 🧩 Preprocessing Workflow — Visual Overview
+
+```mermaid
+flowchart TD
+    A[DICOM (.dcm) files] --> B[Convert with dcm2niix / MRIcroGL]
+    B --> C[NIfTI (.nii) format]
+
+    C --> D[HCP PreFreeSurfer Pipeline<br/>(T1w + T2w structural preprocessing)]
+    D --> E[HCP FreeSurfer Pipeline<br/>(surface reconstruction)]
+    E --> F[HCP fMRIVolume Pipeline<br/>(fMRI preprocessing)]
+
+    F --> G[Processed Data<br/>(clean, aligned, ready for analysis)]
+    G --> H[Feature Extraction<br/>(Connectivity matrices: fMRI, DTI, sMRI)]
+    H --> I[Graph Construction<br/>(multi-modal brain graph)]
+    I --> J[Graph Neural Network (GNN)<br/>Biomarker Discovery & Interpretation]
+```
 
 ---
 
 ## ⚙️ Installation & Dependencies
 
-Before running the pipeline, install the following tools:
+Required tools:
 
-* [**FSL (FMRIB Software Library)**](https://fsl.fmrib.ox.ac.uk/fsl/docs/#/install/index)
+* [**FSL**](https://fsl.fmrib.ox.ac.uk/fsl/docs/#/install/index)
 * [**FreeSurfer**](https://surfer.nmr.mgh.harvard.edu/fswiki/DownloadAndInstall)
-
-  * Requires `license.txt` (obtain from [FreeSurfer Registration](https://surfer.nmr.mgh.harvard.edu/registration.html))
 * [**HCP Pipelines**](https://github.com/Washington-University/HCPpipelines)
 * [**Connectome Workbench**](https://www.humanconnectome.org/software/connectome-workbench)
 
 ---
 
-## 🔄 Step 1: Convert DICOM → NIfTI
+## 🚀 Usage Example
 
-Example using **MRIcroGL**:
+### 1. Convert DICOM → NIfTI
 
 ```bash
 dcm2niix -o /mnt/d/brain/NIfTI/I1092241 \
@@ -49,23 +100,9 @@ dcm2niix -o /mnt/d/brain/NIfTI/I1092241 \
          /mnt/d/brain/DICOM/I1092241
 ```
 
-Resulting file:
+### 2. Run HCP Pipelines
 
-```
-I1092241_Axial_rsfMRI_(EYES_OPEN)_20181213125500_9.nii.gz
-```
-
----
-
-## 🔄 Step 2: Run HCP Pipelines
-
-### 1. Source Setup Script
-
-```bash
-source /mnt/d/brain/HCPpipelines-master/Examples/Scripts/SetUpHCPPipeline.sh
-```
-
-### 2. PreFreeSurfer Pipeline (T1w + T2w)
+**PreFreeSurfer**
 
 ```bash
 /mnt/d/brain/HCPpipelines-master/PreFreeSurfer/PreFreeSurferPipeline.sh \
@@ -73,26 +110,10 @@ source /mnt/d/brain/HCPpipelines-master/Examples/Scripts/SetUpHCPPipeline.sh
 --subject=I1092241 \
 --t1=/mnt/d/brain/NIfTI/I1092241/unprocessed/3T/T1w.nii.gz \
 --t2=/mnt/d/brain/NIfTI/I1092241/unprocessed/3T/T2w.nii.gz \
---t1template=${HCPPIPEDIR_Templates}/MNI152_T1_1mm.nii.gz \
---t1templatebrain=${HCPPIPEDIR_Templates}/MNI152_T1_1mm_brain.nii.gz \
---t1template2mm=${HCPPIPEDIR_Templates}/MNI152_T1_2mm.nii.gz \
---t2template=${HCPPIPEDIR_Templates}/MNI152_T2_1mm.nii.gz \
---t2templatebrain=${HCPPIPEDIR_Templates}/MNI152_T2_1mm_brain.nii.gz \
---t2template2mm=${HCPPIPEDIR_Templates}/MNI152_T2_2mm.nii.gz \
---templatemask=${HCPPIPEDIR_Templates}/MNI152_T1_1mm_brain_mask.nii.gz \
---template2mmmask=${HCPPIPEDIR_Templates}/MNI152_T1_2mm_brain_mask_dil.nii.gz \
---brainsize=150 \
---fnirtconfig=${HCPPIPEDIR_Config}/T1_2_MNI152_2mm.cnf \
---seechospacing=0.0007 \
---seunwarpdir=y \
---t1samplespacing=0.0005 \
---t2samplespacing=0.0005 \
---unwarpdir=y \
---gdcoeffs=NONE \
---avgrdcmethod=FUGUE
+...
 ```
 
-### 3. FreeSurfer Pipeline
+**FreeSurfer**
 
 ```bash
 /mnt/d/brain/HCPpipelines-master/FreeSurfer/FreeSurferPipeline.sh \
@@ -103,7 +124,7 @@ source /mnt/d/brain/HCPpipelines-master/Examples/Scripts/SetUpHCPPipeline.sh
 --t2w-image=/mnt/d/brain/I1092241/T2w/T2w_acpc_dc_restore.nii.gz
 ```
 
-### 4. fMRIVolume Pipeline
+**fMRIVolume**
 
 ```bash
 /mnt/d/brain/HCPpipelines-master/fMRIVolume/GenericfMRIVolumeProcessingPipeline.sh \
@@ -124,27 +145,24 @@ source /mnt/d/brain/HCPpipelines-master/Examples/Scripts/SetUpHCPPipeline.sh
 
 * ❌ `ERROR: unrecognized option: '--subjects-dir'`
 
-  * ✅ Use `--session-dir` instead (the pipeline already infers subjects path).
+  * ✅ Use `--session-dir` instead.
 
 * ❌ `fsl: imcp not found`
 
-  * ✅ Fix by installing missing FSL binaries or creating symbolic links.
+  * ✅ Ensure FSL binaries are in your PATH.
+
+* ❌ FreeSurfer license issues
+
+  * ✅ Place `license.txt` in `$FREESURFER_HOME`.
 
 ---
 
-## 📊 Next Steps
+## 📖 Reference
 
-* Run **feature extraction scripts** on preprocessed data.
-* Generate **connectivity matrices** for machine learning.
+If you use this repository, please cite:
 
----
-
-## 📚 References
-
-* Human Connectome Project (HCP) Pipelines: [GitHub](https://github.com/Washington-University/HCPpipelines)
-* [FSL Installation Guide](https://fsl.fmrib.ox.ac.uk/fsl/docs/#/install/index)
-* [FreeSurfer Documentation](https://surfer.nmr.mgh.harvard.edu/fswiki/Documentation)
+**Qu, G., Zhou, Z., Calhoun, V. D., Zhang, A., & Wang, Y.-P. (2025).**
+*Integrated brain connectivity analysis with fMRI, DTI, and sMRI powered by interpretable graph neural networks.*
+Medical Image Analysis, 103570.
 
 ---
-
-Would you like me to also **add a folder structure diagram** (showing `/NIfTI`, `/I1092241/T1w`, `/I1092241/T2w`, etc.) so that anyone following your README knows exactly where to keep the files?
